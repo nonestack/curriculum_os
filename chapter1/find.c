@@ -38,7 +38,7 @@ getFileType(const char *path){
 
 	initFile(path, &fd, &st);
 	int pathT = 0;
-	switch(st.type){
+	switch(st.type){    //dir is 1 and file is 2
 		case T_DIR:
 			pathT = 1;
 			break;
@@ -68,10 +68,17 @@ find(const char *dir, const char *file){
 		if(0 == de.inum){
 			continue;
 		}
+		if(0 == strcmp(de.name, ".") || 0 == strcmp(de.name, "..")){
+			continue;
+		}
 		if(getFileType(de.name) == 1){
+			strcpy(p, de.name);
 			find(buf, file);
+      //*p = '0';
+      strcpy(p, "");
 		}
 		else{
+      //printf("now dir is %s\n", buf);
 			if(strcmp(de.name, file) == 0){
 				printf("%s%s\n", buf, file);
 			}
